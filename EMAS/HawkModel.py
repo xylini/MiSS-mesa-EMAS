@@ -1,3 +1,5 @@
+import random
+
 from mesa.datacollection import DataCollector
 from mesa.time import RandomActivation
 from EMAS.EmasModel import EmasModel
@@ -99,7 +101,7 @@ class HawkModel(EmasModel):
         old_island = self.get_island(old_pos)
         new_islands = set(self.islands) - {old_island}
         if len(new_islands) > 0:
-            new_island = new_islands.pop()
+            new_island = random.choice(list(new_islands))
         else:
             new_island = old_island
         x = self.random.randrange(new_island[0][0] + 1, new_island[1][0] - 1)

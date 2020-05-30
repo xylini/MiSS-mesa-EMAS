@@ -17,7 +17,7 @@ class EmasAgent(Agent):
         self.genotype = genotype
 
     def die(self) -> bool:
-        if self.energy < self.death_level:
+        if self.energy <= self.death_level:
             self.model.grid._remove_agent(self.pos, self)
             self.model.schedule.remove(self)
             if self.energy > 0:

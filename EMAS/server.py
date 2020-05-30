@@ -25,13 +25,13 @@ def EMAS_model_portrayal(agent):
         portrayal["Shape"] = "resources/hawk.png"
         portrayal["scale"] = 0.9
         portrayal["Layer"] = 1
-        portrayal["text"] = '%.1f' % agent.energy
+        portrayal["text"] = 'e: %.1f  id: %s' % (agent.energy, agent.unique_id)
 
     elif agent.genotype is HawkAndDoveAgent.DOVE:
         portrayal["Shape"] = "resources/dove.png"
         portrayal["scale"] = 0.9
         portrayal["Layer"] = 1
-        portrayal["text"] = '%.1f' % agent.energy
+        portrayal["text"] = 'e: %.1f  id: %s' % (agent.energy, agent.unique_id)
 
     return portrayal
 
