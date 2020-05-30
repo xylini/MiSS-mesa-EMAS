@@ -77,6 +77,6 @@ model_params = {
 }
 
 server = ModularServer(
-    WolfSheep, [canvas_element, chart_element], "Wolf Sheep Predation", model_params
+    WolfSheep, [canvas_element,canvas_element,canvas_element, chart_element], "Wolf Sheep Predation", model_params
 )
 server.port = 8521
