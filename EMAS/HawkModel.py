@@ -1,4 +1,5 @@
 from mesa.time import RandomActivation
+
 from EMAS.EmasModel import EmasModel
 from EMAS.HawkAgent import HawkAgent
 
@@ -24,7 +25,6 @@ class HawkModel(EmasModel):
             moore=moore,
             energy_redistribution_radius=energy_redistribution_radius
         )
-        print("Initializing hawk")
         self.schedule = RandomActivation(self)
         for island in self.islands:
             for _ in range(hawk_per_island):
