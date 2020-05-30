@@ -1,7 +1,9 @@
+from mesa.datacollection import DataCollector
 from mesa.time import RandomActivation
 from EMAS.DoveAgent import DoveAgent
 from EMAS.EmasModel import EmasModel
 from EMAS.HawkAgent import HawkAgent
+from wolf_sheep.schedule import RandomActivationByBreed
 
 
 class HawkModel(EmasModel):
@@ -31,8 +33,16 @@ class HawkModel(EmasModel):
             energy_redistribution_radius=energy_redistribution_radius
         )
 
+        self.schedule = RandomActivationByBreed(self)
+
+        self.datacollector = DataCollector(
+            {
+                "Doves": lambda m: m.schedule.get_breed_count(DoveAgent),
+                "Hawks": lambda m: m.schedule.get_breed_count(HawkAgent),
+            }
+        )
+
         print("Initializing hawk and dove")
-        self.schedule = RandomActivation(self)
         for island in self.islands:
             for _ in range(hawk_per_island):
                 try:
@@ -60,5 +70,9 @@ class HawkModel(EmasModel):
                 self.grid.place_agent(dove, (x, y))
                 self.schedule.add(dove)
 
+        self.running = True
+        self.datacollector.collect(self)
+
     def step(self):
         self.schedule.step()
+        self.datacollector.collect(self)

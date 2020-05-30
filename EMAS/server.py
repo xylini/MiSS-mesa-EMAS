@@ -1,6 +1,6 @@
 from mesa.visualization.ModularVisualization import ModularServer
 from mesa.visualization.UserParam import UserSettableParameter
-from mesa.visualization.modules import CanvasGrid
+from mesa.visualization.modules import CanvasGrid, ChartModule
 
 from EMAS.DoveAgent import DoveAgent
 from EMAS.HawkAgent import HawkAgent
@@ -38,6 +38,10 @@ def EMAS_model_portrayal(agent):
 
 
 canvas_element = CanvasGrid(EMAS_model_portrayal, 20, 20, 500, 500)
+
+chart_element = ChartModule(
+    [{"Label": "Hawks", "Color": "#AA0000"}, {"Label": "Doves", "Color": "#666666"}]
+)
 
 model_params = {
     "moore": UserSettableParameter("checkbox", "Move in all directions", True),
@@ -80,6 +84,6 @@ model_params = {
 }
 
 server = ModularServer(
-    HawkModel, [canvas_element], "EMAS Model", model_params
+    HawkModel, [canvas_element, chart_element], "EMAS Model", model_params
 )
 server.port = 8521

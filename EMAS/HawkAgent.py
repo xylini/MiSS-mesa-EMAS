@@ -26,6 +26,9 @@ class HawkAgent(RandomWalker):
 
                 agent.met_hawk()
 
+        self.migrate()
+        self.die()
+
     def met_hawk(self):
         self.energy += self.hawk_met_hawk
 

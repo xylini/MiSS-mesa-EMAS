@@ -24,6 +24,9 @@ class DoveAgent(RandomWalker):
 
                 agent.met_dove()
 
+        self.migrate()
+        self.die()
+
     def met_hawk(self):
         self.energy += self.dove_met_hawk
 
