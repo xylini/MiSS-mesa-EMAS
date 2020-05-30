@@ -1,6 +1,6 @@
 import random
 
-from EMAS.random_walk import RandomWalker
+from EMAS.RandomWalker import RandomWalker
 
 
 class HawkAndDoveAgent(RandomWalker):
@@ -41,11 +41,10 @@ class HawkAndDoveAgent(RandomWalker):
 
                 agent.met_hawk()
 
-        # self.migrate()
+        self.migrate()
         self.die()
 
     def met_hawk(self):
-        # self.genotype = decide_about_genotype()
         self.last_5_meetings = self.last_5_meetings[1:5] + [HawkAndDoveAgent.HAWK]
         if self.genotype is HawkAndDoveAgent.HAWK:
             self.energy += self.hawk_met_hawk

@@ -94,3 +94,14 @@ class HawkModel(EmasModel):
     def step(self):
         self.schedule.step_and_count()
         self.datacollector.collect(self)
+
+    def generate_migration_destination(self, old_pos):
+        old_island = self.get_island(old_pos)
+        new_islands = set(self.islands) - {old_island}
+        if len(new_islands) > 0:
+            new_island = new_islands.pop()
+        else:
+            new_island = old_island
+        x = self.random.randrange(new_island[0][0] + 1, new_island[1][0] - 1)
+        y = self.random.randrange(new_island[0][1] + 1, new_island[1][1] - 1)
+        return (x, y)

@@ -19,7 +19,7 @@ class EmasModel(Model):
             columns=2,
             rows=2,
             death_level=0,
-            migration_level=0,
+            migration_level=10,
             init_energy=100,
             moore=True,
             energy_redistribution_radius=4,
@@ -63,15 +63,15 @@ class EmasModel(Model):
 
     def get_neighborhood(self, pos: Coordinate, include_center=False, radius=1):
         next_moves = self.grid.get_neighborhood(pos, self.moore, include_center, radius)
-        island = self.__get_island(pos)
-        return self.__filter_coors_in_island(island, next_moves)
+        island = self.get_island(pos)
+        return self._filter_coors_in_island(island, next_moves)
 
     def redistribute_energy(self, pos: Coordinate, energy: float, include_center=False, radius=1):
         print("REDISTRIBUTING FOR RADIUS : " + str(radius))
         neighbours = self.grid.get_neighbors(pos, self.moore, include_center, radius)
-        island = self.__get_island(pos)
+        island = self.get_island(pos)
         print("DISCOVERED NEIGHBOURS: " + str(neighbours))
-        close_neighbours = list(filter(lambda n: self.is_in_island(island, n.pos), neighbours))
+        close_neighbours = list(filter(lambda n: self._is_in_island(island, n.pos), neighbours))
         print("DISCOVERED ISLAND NEIGHBOURS: " + str(close_neighbours))
         emas_neighbours = list(filter(lambda a: isinstance(a, EmasAgent), close_neighbours))
         print("DISCOVERED EMAS ISLAND NEIGHBOURS: " + str(emas_neighbours))
@@ -81,14 +81,14 @@ class EmasModel(Model):
             neighbour.energy += energy_delta
             print("Giving " + str(energy_delta) + " to " + str(neighbour.pos))
 
-    def __get_island(self, pos: Coordinate):
+    def get_island(self, pos: Coordinate):
         return list(filter(lambda coors: coors[0][0] < pos[0] < coors[1][0] and coors[0][1] < pos[1] < coors[1][1],
                            self.islands)).pop()
 
-    def __filter_coors_in_island(self, island: Tuple[Tuple[int, int], Tuple[int, int]],
+    def _filter_coors_in_island(self, island: Tuple[Tuple[int, int], Tuple[int, int]],
                                  positions: List[Tuple[int, int]]):
         return list(filter(lambda move: island[0][0] < move[0] < island[1][0] and island[0][1] < move[1] <
                                         island[1][1], positions))
 
-    def is_in_island(self, island, pos):
+    def _is_in_island(self, island, pos):
         return island[0][0] < pos[0] < island[1][0] and island[0][1] < pos[1] < island[1][1]

@@ -36,4 +36,4 @@ class EmasAgent(Agent):
         raise Exception("Reproduce strategy not implemented!")
 
     def migration_destination(self) -> Coordinate:
-        raise Exception("Migration strategy not implemented!")
+        return self.model.generate_migration_destination(self.pos)

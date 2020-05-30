@@ -63,10 +63,10 @@ model_params = {
         "slider", "Energy agent starts with", 5, 1, 10, 0.1
     ),
     "hawk_per_island": UserSettableParameter(
-        "slider", "Hawks per island", 1, 1, 10
+        "slider", "Hawks per island", 0, 0, 10
     ),
     "dove_per_island": UserSettableParameter(
-        "slider", "Doves per island", 1, 1, 10
+        "slider", "Doves per island", 0, 0, 10
     ),
     "hawk_met_dove": UserSettableParameter(
         "slider", "Points when Hawk met Dove", 0, -10, 10, 0.1
