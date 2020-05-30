@@ -28,8 +28,13 @@ class HawkModel(EmasModel):
         print("Initializing hawk")
         self.schedule = RandomActivation(self)
         for island in self.islands:
-            x = self.random.randrange(island[0][0] + 1, island[1][0] - 1)
-            y = self.random.randrange(island[0][1] + 1, island[1][1] - 1)
+            try:
+                x = self.random.randrange(island[0][0] + 1, island[1][0] - 1)
+                y = self.random.randrange(island[0][1] + 1, island[1][1] - 1)
+            except ValueError:
+                x = island[0][0] + 1
+                y = island[0][1] + 1
+
             print("Creating hawk at: x=" + str(x) + " y=" + str(y))
             energy = self.init_energy
             hawk = HawkAgent(self.next_id(), (x, y), self, energy=energy)
