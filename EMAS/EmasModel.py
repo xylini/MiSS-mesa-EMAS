@@ -1,7 +1,6 @@
 from typing import List, Tuple, Union, Optional, Set
 from mesa import Model, Agent
 from mesa.space import MultiGrid, Coordinate
-
 from EMAS.IslandBorderAgent import IslandBorderAgent
 from EMAS.EmasAgent import EmasAgent
 
@@ -62,28 +61,29 @@ class EmasModel(Model):
             border = IslandBorderAgent(self.next_id(), border_cords, self)
             self.grid.place_agent(border, border_cords)
 
-    def get_neighborhood(self, pos: Coordinate, moore: bool, include_center=False, radius=1):
+    def get_neighborhood(self, pos: Coordinate, moore=True, include_center=False, radius=1):
         next_moves = self.grid.get_neighborhood(pos, moore, include_center, radius)
         island = self.__get_island(pos)
         return self.__filter_coors_in_island(island, next_moves)
 
-    def redistribute_energy(self, pos: Coordinate, energy: float, moore: bool, include_center=False, radius=1):
+    def redistribute_energy(self, pos: Coordinate, energy: float, moore=True, include_center=False, radius=1):
         pass
         # neighbours = self.grid.get_neighbors(pos, moore, include_center, radius)
         # island = self.__get_island(pos)
         # island_neighbours = self.__filter_coors_in_island(island, neighbours)
         # neighbour_agents: List[Union[Optional[Agent], Set[Agent]]] = self.grid.get_cell_list_contents(island_neighbours)
-        #
-        # neighbour_emas_agents: List[EmasAgent] = list(filter(lambda a: isinstance(a, EmasAgent), neighbour_agents))
+        # neighbour_emas_agents: List[Union[Optional[Agent], Set[Agent]]] = list(filter(lambda a: isinstance(a, EmasAgent), neighbour_agents))
+        # # neighbour_emas_agents.
         # energy_delta = energy/len(neighbour_emas_agents)
         # for agent in neighbour_agents:
-
+        #     pass
 
     # Assuming (0, 0) is at the top left corner
     def __get_island(self, pos: Coordinate):
         return list(filter(lambda coors: coors[0][0] < pos[0] < coors[1][0] and coors[0][1] < pos[1] < coors[1][1],
                            EmasModel.islands)).pop()
 
-    def __filter_coors_in_island(self, island: Tuple[Tuple[int, int], Tuple[int, int]], positions: List[Tuple[int, int]]):
+    def __filter_coors_in_island(self, island: Tuple[Tuple[int, int], Tuple[int, int]],
+                                 positions: List[Tuple[int, int]]):
         return list(filter(lambda move: island[0][0] < move[0] < island[1][0] and island[0][1] < move[1] <
-                                 island[1][1], positions))
+                                        island[1][1], positions))
