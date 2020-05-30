@@ -45,16 +45,16 @@ chart_element = ChartModule(
 model_params = {
     "moore": UserSettableParameter("checkbox", "Move in all directions", True),
     "columns": UserSettableParameter(
-        "slider", "Columns", 1, 1, 10
+        "slider", "Columns", 3, 1, 10
     ),
     "rows": UserSettableParameter(
-        "slider", "Rows", 1, 1, 10
+        "slider", "Rows", 3, 1, 10
     ),
     "migration_level": UserSettableParameter(
-        "slider", "Energy level to allow migration", 5, 1, 10, 0.01
+        "slider", "Energy level to allow migration", 8, 1, 10, 0.01
     ),
     "death_level": UserSettableParameter(
-        "slider", "Energy level to die", 1, 1, 10, 0.01
+        "slider", "Energy level to die", 0, 0, 10, 0.01
     ),
     "energy_redistribution_radius": UserSettableParameter(
         "slider", "Energy redistribution radius", 4, 1, 20
@@ -63,22 +63,22 @@ model_params = {
         "slider", "Energy agent starts with", 5, 1, 10, 0.1
     ),
     "hawk_per_island": UserSettableParameter(
-        "slider", "Hawks per island", 0, 0, 10
+        "slider", "Hawks per island", 2, 0, 10
     ),
     "dove_per_island": UserSettableParameter(
-        "slider", "Doves per island", 0, 0, 10
+        "slider", "Doves per island", 2, 0, 10
     ),
     "hawk_met_dove": UserSettableParameter(
-        "slider", "Points when Hawk met Dove", 0, -10, 10, 0.1
+        "slider", "Points when Hawk met Dove", 1, -10, 10, 0.1
     ),
     "hawk_met_hawk": UserSettableParameter(
-        "slider", "Points when Hawk met Hawk", 0, -10, 10, 0.1
+        "slider", "Points when Hawk met Hawk", -3, -3, 10, 0.1
     ),
     "dove_met_dove": UserSettableParameter(
         "slider", "Points when Dove met Dove", 0, -10, 10, 0.1
     ),
     "dove_met_hawk": UserSettableParameter(
-        "slider", "Points when Dove met Hawk", 0, -10, 10, 0.1
+        "slider", "Points when Dove met Hawk", -1, -10, 10, 0.1
     ),
 }
 
