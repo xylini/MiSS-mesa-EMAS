@@ -9,7 +9,7 @@ class EmasAgent(Agent):
     other agents.
     """
 
-    def __init__(self, unique_id, model, migration_level, death_level=0, energy=None):
+    def __init__(self, unique_id, model, migration_level=10, death_level=0, energy=None):
         super().__init__(unique_id, model)
         self.energy = energy
         self.death_level = death_level
@@ -35,4 +35,3 @@ class EmasAgent(Agent):
 
     def migration_destination(self) -> Coordinate:
         raise Exception("Migration strategy not implemented!")
-    
