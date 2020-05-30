@@ -1,9 +1,8 @@
 from mesa.datacollection import DataCollector
 from mesa.time import RandomActivation
-from EMAS.DoveAgent import DoveAgent
 from EMAS.EmasModel import EmasModel
-from EMAS.HawkAgent import HawkAgent
-from wolf_sheep.schedule import RandomActivationByBreed
+from EMAS.HawkAndDoveAgent import HawkAndDoveAgent
+from EMAS.schedule import RandomActivationByBreed
 
 
 class HawkModel(EmasModel):
@@ -37,8 +36,8 @@ class HawkModel(EmasModel):
 
         self.datacollector = DataCollector(
             {
-                "Doves": lambda m: m.schedule.get_breed_count(DoveAgent),
-                "Hawks": lambda m: m.schedule.get_breed_count(HawkAgent),
+                "Doves": lambda m: m.schedule.get_breed_count(HawkAndDoveAgent.DOVE),
+                "Hawks": lambda m: m.schedule.get_breed_count(HawkAndDoveAgent.HAWK),
             }
         )
 
@@ -53,7 +52,16 @@ class HawkModel(EmasModel):
                     y = island[0][1] + 1
                 print("Creating hawk at: x=" + str(x) + " y=" + str(y))
                 energy = self.init_energy
-                hawk = HawkAgent(self.next_id(), (x, y), self, energy, hawk_met_hawk, hawk_met_dove)
+                hawk = HawkAndDoveAgent(
+                    self.next_id(),
+                    (x, y), self,
+                    energy,
+                    hawk_met_hawk,
+                    hawk_met_dove,
+                    dove_met_hawk,
+                    dove_met_dove,
+                    HawkAndDoveAgent.HAWK
+                )
                 self.grid.place_agent(hawk, (x, y))
                 self.schedule.add(hawk)
 
@@ -66,7 +74,17 @@ class HawkModel(EmasModel):
                     y = island[0][1] + 1
                 print("Creating dove at: x=" + str(x) + " y=" + str(y))
                 energy = self.init_energy
-                dove = DoveAgent(self.next_id(), (x, y), self, energy, dove_met_hawk, dove_met_dove)
+                dove = HawkAndDoveAgent(
+                    self.next_id(),
+                    (x, y), self,
+                    energy,
+                    hawk_met_hawk,
+                    hawk_met_dove,
+                    dove_met_hawk,
+                    dove_met_dove,
+                    HawkAndDoveAgent.DOVE
+                )
+
                 self.grid.place_agent(dove, (x, y))
                 self.schedule.add(dove)
 
@@ -74,5 +92,5 @@ class HawkModel(EmasModel):
         self.datacollector.collect(self)
 
     def step(self):
-        self.schedule.step()
+        self.schedule.step_and_count()
         self.datacollector.collect(self)

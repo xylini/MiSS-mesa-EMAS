@@ -9,11 +9,12 @@ class EmasAgent(Agent):
     other agents.
     """
 
-    def __init__(self, unique_id, model, migration_level=10, death_level=0, energy=None):
+    def __init__(self, unique_id, model, migration_level=10, death_level=0, energy=None, genotype=None):
         super().__init__(unique_id, model)
         self.energy = energy
         self.death_level = death_level
         self.migration_level = migration_level
+        self.genotype = genotype
 
     def die(self) -> bool:
         if self.energy < self.death_level:

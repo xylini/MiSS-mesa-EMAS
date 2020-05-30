@@ -2,8 +2,7 @@ from mesa.visualization.ModularVisualization import ModularServer
 from mesa.visualization.UserParam import UserSettableParameter
 from mesa.visualization.modules import CanvasGrid, ChartModule
 
-from EMAS.DoveAgent import DoveAgent
-from EMAS.HawkAgent import HawkAgent
+from EMAS.HawkAndDoveAgent import HawkAndDoveAgent
 from EMAS.HawkModel import HawkModel
 from EMAS.IslandBorderAgent import IslandBorderAgent
 
@@ -14,25 +13,25 @@ def EMAS_model_portrayal(agent):
 
     portrayal = {}
 
-    if type(agent) is HawkAgent:
-        portrayal["Shape"] = "resources/hawk.png"
-        portrayal["scale"] = 0.9
-        portrayal["Layer"] = 1
-        portrayal["text"] = agent.energy
-
-    elif type(agent) is DoveAgent:
-        portrayal["Shape"] = "resources/dove.png"
-        portrayal["scale"] = 0.9
-        portrayal["Layer"] = 1
-        portrayal["text"] = agent.energy
-
-    elif type(agent) is IslandBorderAgent:
+    if type(agent) is IslandBorderAgent:
         portrayal["Color"] = ["#802000"]
         portrayal["Shape"] = "rect"
         portrayal["Filled"] = "true"
         portrayal["Layer"] = 0
         portrayal["w"] = 1
         portrayal["h"] = 1
+
+    elif agent.genotype is HawkAndDoveAgent.HAWK:
+        portrayal["Shape"] = "resources/hawk.png"
+        portrayal["scale"] = 0.9
+        portrayal["Layer"] = 1
+        portrayal["text"] = '%.1f' % agent.energy
+
+    elif agent.genotype is HawkAndDoveAgent.DOVE:
+        portrayal["Shape"] = "resources/dove.png"
+        portrayal["scale"] = 0.9
+        portrayal["Layer"] = 1
+        portrayal["text"] = '%.1f' % agent.energy
 
     return portrayal
 
