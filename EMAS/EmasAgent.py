@@ -10,16 +10,13 @@ class EmasAgent(Agent):
     other agents.
     """
 
-    energy_required = -5
-
-    energy = None
-
-    def __init__(self, unique_id, model: EmasModel, energy=None):
+    def __init__(self, unique_id, model: EmasModel, death_level=0, energy=None):
         super().__init__(unique_id, model)
         self.energy = energy
+        self.death_level = death_level
 
     def died(self) -> bool:
-        if self.energy < EmasAgent.energy_required:
+        if self.energy < self.death_level:
             self.model.grid._remove_agent(self.pos, self)
             self.model.schedule.remove(self)
             self.model.redistribute_energy(self.pos, self.energy)
