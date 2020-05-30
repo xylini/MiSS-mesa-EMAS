@@ -1,3 +1,4 @@
+from mesa.space import MultiGrid
 from mesa.time import RandomActivation
 from EMAS.EmasModel import EmasModel
 from EMAS.HawkAgent import HawkAgent
@@ -24,6 +25,7 @@ class HawkModel(EmasModel):
             energy_redistribution_radius=energy_redistribution_radius
         )
         print("Initializing hawk")
+        self.grid = MultiGrid(self.height, self.width, torus=True)
         self.schedule = RandomActivation(self)
         for island in self.islands:
             try:
