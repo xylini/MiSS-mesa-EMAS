@@ -1,3 +1,5 @@
+import random
+
 from EMAS.random_walk import RandomWalker
 
 
@@ -9,3 +11,5 @@ class HawkAgent(RandomWalker):
     def step(self):
         print("Performing hawk step")
         self.random_move()
+        self.energy -= random.random()
+        self.died()

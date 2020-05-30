@@ -19,7 +19,8 @@ class EmasAgent(Agent):
         if self.energy < self.death_level:
             self.model.grid._remove_agent(self.pos, self)
             self.model.schedule.remove(self)
-            # self.model.redistribute_energy(self.pos, self.energy)
+            if self.energy > 0:
+                self.model.redistribute_energy(self.pos, self.energy)
             return False
         return True
 

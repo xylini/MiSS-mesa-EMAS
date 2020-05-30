@@ -20,6 +20,7 @@ class Sheep(RandomWalker):
         A model step. Move, then eat grass and reproduce.
         """
         self.random_move()
+        print("Sheep meved to  "+str(self.pos))
         living = True
 
         if self.model.grass:

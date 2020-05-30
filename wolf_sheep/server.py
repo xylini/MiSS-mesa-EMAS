@@ -2,6 +2,7 @@ from mesa.visualization.ModularVisualization import ModularServer
 from mesa.visualization.modules import CanvasGrid, ChartModule
 from mesa.visualization.UserParam import UserSettableParameter
 
+from EMAS import IslandBorderAgent
 from wolf_sheep.agents import Wolf, Sheep, GrassPatch
 from wolf_sheep.model import WolfSheep
 
@@ -17,6 +18,8 @@ def wolf_sheep_portrayal(agent):
         # https://icons8.com/web-app/433/sheep
         portrayal["scale"] = 0.9
         portrayal["Layer"] = 1
+        portrayal["text"] = round(agent.energy, 1)
+
 
     elif type(agent) is Wolf:
         portrayal["Shape"] = "wolf_sheep/resources/wolf.png"
@@ -37,6 +40,14 @@ def wolf_sheep_portrayal(agent):
         portrayal["w"] = 1
         portrayal["h"] = 1
 
+    if type(agent) is IslandBorderAgent:
+        portrayal["Color"] = ["#802000"]
+        portrayal["Shape"] = "rect"
+        portrayal["Filled"] = "true"
+        portrayal["Layer"] = 0
+        portrayal["w"] = 1
+        portrayal["h"] = 1
+
     return portrayal
 
 
@@ -47,18 +58,23 @@ chart_element = ChartModule(
 )
 
 model_params = {
+
+    "columns": UserSettableParameter(
+        "slider", "Columns", 1, 1, 10
+    ),
+
     "grass": UserSettableParameter("checkbox", "Grass Enabled", True),
     "grass_regrowth_time": UserSettableParameter(
         "slider", "Grass Regrowth Time", 20, 1, 50
     ),
     "initial_sheep": UserSettableParameter(
-        "slider", "Initial Sheep Population", 100, 10, 300
+        "slider", "Initial Sheep Population", 1, 10, 300
     ),
     "sheep_reproduce": UserSettableParameter(
         "slider", "Sheep Reproduction Rate", 0.04, 0.01, 1.0, 0.01
     ),
     "initial_wolves": UserSettableParameter(
-        "slider", "Initial Wolf Population", 50, 10, 300
+        "slider", "Initial Wolf Population", 0, 10, 300
     ),
     "wolf_reproduce": UserSettableParameter(
         "slider",
