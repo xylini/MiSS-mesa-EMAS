@@ -1,11 +1,9 @@
 from mesa.time import RandomActivation
-
 from EMAS.EmasModel import EmasModel
 from EMAS.HawkAgent import HawkAgent
 
 
 class HawkModel(EmasModel):
-
     def __init__(
             self,
             columns,
@@ -40,3 +38,6 @@ class HawkModel(EmasModel):
             hawk = HawkAgent(self.next_id(), (x, y), self, energy=energy)
             self.grid.place_agent(hawk, (x, y))
             self.schedule.add(hawk)
+
+    def step(self):
+        self.schedule.step()

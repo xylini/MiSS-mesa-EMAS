@@ -10,7 +10,7 @@ class EmasModel(Model):
     # death_level: float = 0
     # migration_level: float = 0
     # energy_redistribution_radius: int = 4
-    # islands: List[Tuple[Tuple[int, int], Tuple[int, int]]] = []
+    islands: List[Tuple[Tuple[int, int], Tuple[int, int]]] = []
     # init_energy: float = 10
     # moore: bool = True
 
@@ -88,7 +88,7 @@ class EmasModel(Model):
     def __get_island(self, pos: Coordinate):
         print("Getting island for " + str(pos))
         return list(filter(lambda coors: coors[0][0] < pos[0] < coors[1][0] and coors[0][1] < pos[1] < coors[1][1],
-                           EmasModel.islands)).pop()
+                           self.islands)).pop()
 
     def __filter_coors_in_island(self, island: Tuple[Tuple[int, int], Tuple[int, int]],
                                  positions: List[Tuple[int, int]]):
