@@ -1,5 +1,4 @@
 from mesa.time import RandomActivation
-
 from EMAS.DoveAgent import DoveAgent
 from EMAS.EmasModel import EmasModel
 from EMAS.HawkAgent import HawkAgent
@@ -31,6 +30,7 @@ class HawkModel(EmasModel):
             moore=moore,
             energy_redistribution_radius=energy_redistribution_radius
         )
+
         print("Initializing hawk and dove")
         self.schedule = RandomActivation(self)
         for island in self.islands:

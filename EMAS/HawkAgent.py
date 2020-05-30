@@ -1,3 +1,5 @@
+import random
+
 from EMAS.random_walk import RandomWalker
 
 
@@ -10,8 +12,8 @@ class HawkAgent(RandomWalker):
 
     def step(self):
         print("Performing hawk step")
+        self.migrate()
         self.random_move()
-
         this_cell = self.model.grid.get_cell_list_contents([self.pos])
 
         for agent in this_cell:

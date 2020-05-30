@@ -20,6 +20,7 @@ class Sheep(RandomWalker):
         A model step. Move, then eat grass and reproduce.
         """
         self.random_move()
+        print("Sheep meved to  "+str(self.pos))
         living = True
 
         if self.model.grass:
@@ -34,7 +35,7 @@ class Sheep(RandomWalker):
                 grass_patch.fully_grown = False
 
             # Death
-            self.died()
+            self.die()
 
         if living and self.random.random() < self.model.sheep_reproduce:
             # Create a new sheep:

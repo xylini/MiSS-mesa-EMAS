@@ -23,11 +23,11 @@ class WolfSheep(EmasModel):
     Wolf-Sheep Predation Model
     """
 
-    height = 20
-    width = 20
+    # height = 20
+    # width = 20
 
-    initial_sheep = 100
-    initial_wolves = 50
+    initial_sheep = 1
+    initial_wolves = 0
 
     sheep_reproduce = 0.04
     wolf_reproduce = 0.05
@@ -46,16 +46,17 @@ class WolfSheep(EmasModel):
 
     def __init__(
         self,
+        columns,
         height=20,
         width=20,
-        initial_sheep=100,
-        initial_wolves=50,
+        initial_sheep=1,
+        initial_wolves=0,
         sheep_reproduce=0.04,
         wolf_reproduce=0.05,
         wolf_gain_from_food=20,
         grass=False,
         grass_regrowth_time=30,
-        sheep_gain_from_food=4,
+        sheep_gain_from_food=4
     ):
         """
         Create a new Wolf-Sheep model with the given parameters.
@@ -73,6 +74,7 @@ class WolfSheep(EmasModel):
         """
         super().__init__()
         # Set parameters
+        self.columns=columns
         self.height = height
         self.width = width
         self.initial_sheep = initial_sheep
@@ -97,34 +99,38 @@ class WolfSheep(EmasModel):
         for i in range(self.initial_sheep):
             x = self.random.randrange(self.width)
             y = self.random.randrange(self.height)
-            energy = self.random.randrange(2 * self.sheep_gain_from_food)
-            sheep = Sheep(self.next_id(), (x, y), self, True, energy)
-            self.grid.place_agent(sheep, (x, y))
-            self.schedule.add(sheep)
+            if x != 10 and y != 10:
+                energy = self.random.randrange(2 * self.sheep_gain_from_food)
+                sheep = Sheep(self.next_id(), (x, y), self, True, energy)
+                self.grid.place_agent(sheep, (x, y))
+                self.schedule.add(sheep)
 
         # Create wolves
         for i in range(self.initial_wolves):
             x = self.random.randrange(self.width)
             y = self.random.randrange(self.height)
-            energy = self.random.randrange(2 * self.wolf_gain_from_food)
-            wolf = Wolf(self.next_id(), (x, y), self, True, energy)
-            self.grid.place_agent(wolf, (x, y))
-            self.schedule.add(wolf)
+            if x != 10 and y != 10:
+                energy = self.random.randrange(2 * self.wolf_gain_from_food)
+                wolf = Wolf(self.next_id(), (x, y), self, True, energy)
+                self.grid.place_agent(wolf, (x, y))
+                self.schedule.add(wolf)
 
         # Create grass patches
         if self.grass:
             for agent, x, y in self.grid.coord_iter():
 
-                fully_grown = self.random.choice([True, False])
+                if x != 10 and y != 10:
 
-                if fully_grown:
-                    countdown = self.grass_regrowth_time
-                else:
-                    countdown = self.random.randrange(self.grass_regrowth_time)
+                    fully_grown = self.random.choice([True, False])
 
-                patch = GrassPatch(self.next_id(), (x, y), self, fully_grown, countdown)
-                self.grid.place_agent(patch, (x, y))
-                self.schedule.add(patch)
+                    if fully_grown:
+                        countdown = self.grass_regrowth_time
+                    else:
+                        countdown = self.random.randrange(self.grass_regrowth_time)
+
+                    patch = GrassPatch(self.next_id(), (x, y), self, fully_grown, countdown)
+                    self.grid.place_agent(patch, (x, y))
+                    self.schedule.add(patch)
 
         self.running = True
         self.datacollector.collect(self)
