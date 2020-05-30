@@ -36,7 +36,8 @@ class EmasModel(Model):
             migration_level=0,
             init_energy=100,
             moore=True,
-            energy_redistribution_radius=4
+            energy_redistribution_radius=4,
+            islands=[]
     ):
         super().__init__()
         self.height: int = height
@@ -48,19 +49,29 @@ class EmasModel(Model):
         self.moore: bool = moore
         self.init_energy: float = init_energy
         self.energy_redistribution_radius: int = energy_redistribution_radius
-
+        self.islands = islands
         self.grid = MultiGrid(self.height, self.width, torus=True)
 
         # TODO: remember to set max volumns and rows
-        columns_points: Set[Tuple[int, int]] = {(int(self.width * part / columns), y) for part in range(1, self.columns)
-                                                for y in range(self.height)}
+        borders_x_indexes = sorted([int(self.width * part / columns) for part in range(1, self.columns)])
+        columns_points: Set[Tuple[int, int]] = {(x, y) for x in borders_x_indexes for y in range(self.height)}
 
-        rows_points: Set[Tuple[int, int]] = {(x, int(self.height * part / rows)) for x in range(self.width) for part in
-                                             range(1, self.rows)}
+        borders_y_indexes = sorted([int(self.height * part / rows) for part in range(1, self.rows)])
+        rows_points: Set[Tuple[int, int]] = {(x, y) for x in range(self.width) for y in borders_y_indexes}
 
         for border_cords in columns_points | rows_points:
             border = IslandBorderAgent(self.next_id(), border_cords, self)
             self.grid.place_agent(border, border_cords)
+
+        islands_x_corners = [-1] + borders_x_indexes + [self.width]
+        islands_y_corners = [-1] + borders_y_indexes + [self.height]
+
+        # left upper and right lower corner
+        self.islands = [
+            ((x, y), (islands_x_corners[x_u + 1], islands_y_corners[y_u + 1]))
+            for x_u, x in enumerate(islands_x_corners) if x != self.width
+            for y_u, y in enumerate(islands_y_corners) if y != self.height
+        ]
 
     def get_neighborhood(self, pos: Coordinate, moore: bool, include_center=False, radius=1):
         next_moves = self.grid.get_neighborhood(pos, moore, include_center, radius)
