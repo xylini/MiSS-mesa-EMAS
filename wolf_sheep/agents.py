@@ -34,7 +34,7 @@ class Sheep(RandomWalker):
                 grass_patch.fully_grown = False
 
             # Death
-            self.is_alive()
+            self.died()
 
         if living and self.random.random() < self.model.sheep_reproduce:
             # Create a new sheep:
