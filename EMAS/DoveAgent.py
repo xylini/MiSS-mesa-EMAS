@@ -1,4 +1,4 @@
-from EMAS.random_walk import RandomWalker
+from EMAS.RandomWalker import RandomWalker
 
 
 class DoveAgent(RandomWalker):

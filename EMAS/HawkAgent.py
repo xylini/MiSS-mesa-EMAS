@@ -1,6 +1,6 @@
 import random
 
-from EMAS.random_walk import RandomWalker
+from EMAS.RandomWalker import RandomWalker
 
 
 class HawkAgent(RandomWalker):
