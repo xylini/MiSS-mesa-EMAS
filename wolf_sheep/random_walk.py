@@ -1,11 +1,11 @@
 """
 Generalized behavior for random walking, one grid cell at a time.
 """
-
+from EMAS.EmasAgent import EmasAgent
 from mesa import Agent
 
 
-class RandomWalker(Agent):
+class RandomWalker(EmasAgent):
     """
     Class implementing random walker methods in a generalized manner.
 

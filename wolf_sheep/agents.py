@@ -34,10 +34,7 @@ class Sheep(RandomWalker):
                 grass_patch.fully_grown = False
 
             # Death
-            if self.energy < 0:
-                self.model.grid._remove_agent(self.pos, self)
-                self.model.schedule.remove(self)
-                living = False
+            self.is_alive()
 
         if living and self.random.random() < self.model.sheep_reproduce:
             # Create a new sheep:

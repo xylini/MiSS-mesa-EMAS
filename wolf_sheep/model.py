@@ -15,9 +15,10 @@ from mesa.datacollection import DataCollector
 
 from wolf_sheep.agents import Sheep, Wolf, GrassPatch
 from wolf_sheep.schedule import RandomActivationByBreed
+from EMAS.EmasModel import EmasModel
 
 
-class WolfSheep(Model):
+class WolfSheep(EmasModel):
     """
     Wolf-Sheep Predation Model
     """

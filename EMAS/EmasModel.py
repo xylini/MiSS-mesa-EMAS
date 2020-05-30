@@ -11,6 +11,7 @@ class EmasModel(Model):
 
     death_level = 0
     migration_level = 0
+    energy_redistribution_radius = 4
 
     description = (
         "A model for simulating using EMAS model"
@@ -37,5 +38,3 @@ class EmasModel(Model):
 
         #TODO: remember to set max volumns and rows
         columns_points = [(x, y) for x in range(self.columns-1, self.width, int(width/columns)) for y in range(height)]
-
-
