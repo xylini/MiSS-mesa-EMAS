@@ -14,10 +14,11 @@ def EMAS_model_portrayal(agent):
     portrayal = {}
 
     if type(agent) is HawkAgent:
-        portrayal["Shape"] = "wolf_sheep/resources/sheep.png"
+        portrayal["Shape"] = "resources/dove.png"
         # https://icons8.com/web-app/433/sheep
         portrayal["scale"] = 0.9
         portrayal["Layer"] = 1
+        portrayal["text"] = agent.energy
 
     if type(agent) is IslandBorderAgent:
         portrayal["Color"] = ["#802000"]
@@ -51,6 +52,9 @@ model_params = {
     ),
     "init_energy": UserSettableParameter(
         "slider", "Energy agent starts with", 5, 1, 10, 0.1
+    ),
+    "hawk_per_island": UserSettableParameter(
+        "slider", "Hawks per island", 1, 1, 10
     )
 }
 
