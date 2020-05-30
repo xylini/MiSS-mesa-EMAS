@@ -1,10 +1,9 @@
 import random
 
 from mesa.datacollection import DataCollector
-from mesa.time import RandomActivation
 from EMAS.EmasModel import EmasModel
-from EMAS.HawkAndDoveAgent import HawkAndDoveAgent
-from EMAS.schedule import RandomActivationByBreed
+from hawk_dove.HawkAndDoveAgent import HawkAndDoveAgent
+from EMAS.schedule import RandomActivationByGenotype
 
 
 class HawkModel(EmasModel):
@@ -34,7 +33,7 @@ class HawkModel(EmasModel):
             energy_redistribution_radius=energy_redistribution_radius
         )
 
-        self.schedule = RandomActivationByBreed(self)
+        self.schedule = RandomActivationByGenotype(self)
 
         self.datacollector = DataCollector(
             {

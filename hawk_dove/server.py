@@ -2,9 +2,10 @@ from mesa.visualization.ModularVisualization import ModularServer
 from mesa.visualization.UserParam import UserSettableParameter
 from mesa.visualization.modules import CanvasGrid, ChartModule
 
-from EMAS.HawkAndDoveAgent import HawkAndDoveAgent
-from EMAS.HawkModel import HawkModel
+from hawk_dove.HawkAndDoveAgent import HawkAndDoveAgent
+from hawk_dove.HawkModel import HawkModel
 from EMAS.IslandBorderAgent import IslandBorderAgent
+from EMAS.constants import HEIGHT, WIDTH, HEIGHT_RESOLUTION, WIDTH_RESOLUTION
 
 
 def EMAS_model_portrayal(agent):
@@ -36,7 +37,7 @@ def EMAS_model_portrayal(agent):
     return portrayal
 
 
-canvas_element = CanvasGrid(EMAS_model_portrayal, 20, 20, 500, 500)
+canvas_element = CanvasGrid(EMAS_model_portrayal, HEIGHT, WIDTH, HEIGHT_RESOLUTION, WIDTH_RESOLUTION)
 
 chart_element = ChartModule(
     [{"Label": "Hawks", "Color": "#AA0000"}, {"Label": "Doves", "Color": "#666666"}]

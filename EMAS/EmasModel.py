@@ -5,7 +5,7 @@ from mesa.space import MultiGrid, Coordinate
 
 from EMAS.EmasAgent import EmasAgent
 from EMAS.IslandBorderAgent import IslandBorderAgent
-
+from EMAS.constants import HEIGHT, WIDTH
 
 class EmasModel(Model):
     description = (
@@ -14,8 +14,8 @@ class EmasModel(Model):
 
     def __init__(
             self,
-            height=20,
-            width=20,
+            height=HEIGHT,
+            width=WIDTH,
             columns=2,
             rows=2,
             death_level=0,
