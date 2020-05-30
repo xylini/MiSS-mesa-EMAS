@@ -1,7 +1,7 @@
 from mesa import Agent
 
 
-class IslandBoarderAgent(Agent):
+class IslandBorderAgent(Agent):
     grid = None
     x = None
     y = None
