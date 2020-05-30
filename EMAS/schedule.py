@@ -41,4 +41,6 @@ class RandomActivationByBreed(RandomActivation):
         """
         Returns the current number of agents of certain breed in the queue.
         """
+        if breed_class not in self.agents_by_breed:
+            return 0
         return self.agents_by_breed[breed_class]
