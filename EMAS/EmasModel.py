@@ -6,20 +6,13 @@ from EMAS.EmasAgent import EmasAgent
 
 
 class EmasModel(Model):
-    height: int = 20
-    width: int = 20
 
-    columns: int = 1
-    rows: int = 1
-
-    death_level: float = 0
-    migration_level: float = 0
-    energy_redistribution_radius: int = 4
-    islands: List[Tuple[Tuple[int, int], Tuple[int, int]]] = []
-
-    init_energy: float = 10
-
-    moore: bool = True
+    # death_level: float = 0
+    # migration_level: float = 0
+    # energy_redistribution_radius: int = 4
+    # islands: List[Tuple[Tuple[int, int], Tuple[int, int]]] = []
+    # init_energy: float = 10
+    # moore: bool = True
 
     description = (
         "A model for simulating using EMAS model"
@@ -29,8 +22,8 @@ class EmasModel(Model):
             self,
             height=20,
             width=20,
-            columns=1,
-            rows=1,
+            columns=2,
+            rows=2,
             death_level=0,
             migration_level=0,
             init_energy=100,
@@ -48,7 +41,7 @@ class EmasModel(Model):
         self.moore: bool = moore
         self.init_energy: float = init_energy
         self.energy_redistribution_radius: int = energy_redistribution_radius
-        self.islands = islands
+        self.islands: List[Tuple[Tuple[int, int], Tuple[int, int]]] = islands
         self.grid = MultiGrid(self.height, self.width, torus=True)
 
         # TODO: remember to set max volumns and rows
@@ -71,26 +64,28 @@ class EmasModel(Model):
             for x_u, x in enumerate(islands_x_corners) if x != self.width
             for y_u, y in enumerate(islands_y_corners) if y != self.height
         ]
+        print(self.islands)
 
-    def get_neighborhood(self, pos: Coordinate, moore=True, include_center=False, radius=1):
-        next_moves = self.grid.get_neighborhood(pos, moore, include_center, radius)
+    def get_neighborhood(self, pos: Coordinate, include_center=False, radius=1):
+        next_moves = self.grid.get_neighborhood(pos, self.moore, include_center, radius)
         island = self.__get_island(pos)
         return self.__filter_coors_in_island(island, next_moves)
 
-    def redistribute_energy(self, pos: Coordinate, energy: float, moore=True, include_center=False, radius=1):
-        pass
-        # neighbours = self.grid.get_neighbors(pos, moore, include_center, radius)
-        # island = self.__get_island(pos)
-        # island_neighbours = self.__filter_coors_in_island(island, neighbours)
-        # neighbour_agents: List[Union[Optional[Agent], Set[Agent]]] = self.grid.get_cell_list_contents(island_neighbours)
-        # neighbour_emas_agents: List[Union[Optional[Agent], Set[Agent]]] = list(filter(lambda a: isinstance(a, EmasAgent), neighbour_agents))
-        # # neighbour_emas_agents.
-        # energy_delta = energy/len(neighbour_emas_agents)
-        # for agent in neighbour_agents:
-        #     pass
+    # def redistribute_energy(self, pos: Coordinate, energy: float, include_center=False, radius=1):
+    #     neighbours = self.grid.get_neighbors(pos, self.moore, include_center, radius)
+    #     island = self.__get_island(pos)
+    #     island_neighbours = self.__filter_coors_in_island(island, neighbours)
+    #     neighbour_agents: List[Union[Optional[Agent], Set[Agent]]] = self.grid.get_cell_list_contents(island_neighbours)
+    #     neighbour_emas_agents: List[Union[Optional[Agent], Set[Agent]]] = list(filter(lambda a: isinstance(a, EmasAgent), neighbour_agents))
+    #     print("REDISTRIBUTING FOR RADIUS : " + str(radius))
+    #     print(neighbour_emas_agents)
+    #     # energy_delta = energy/len(neighbour_emas_agents)
+    #     # for agent in neighbour_agents:
+    #     #     pass
 
     # Assuming (0, 0) is at the top left corner
     def __get_island(self, pos: Coordinate):
+        print("Getting island for "+str(pos))
         return list(filter(lambda coors: coors[0][0] < pos[0] < coors[1][0] and coors[0][1] < pos[1] < coors[1][1],
                            EmasModel.islands)).pop()
 
