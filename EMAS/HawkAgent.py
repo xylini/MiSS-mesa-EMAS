@@ -7,4 +7,5 @@ class HawkAgent(RandomWalker):
         super().__init__(unique_id, pos, model, energy)
 
     def step(self):
+        print("Performing hawk step")
         self.random_move()
