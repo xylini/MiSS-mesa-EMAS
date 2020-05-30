@@ -3,7 +3,7 @@ from EMAS.EmasAgent import EmasAgent
 
 class RandomWalker(EmasAgent):
 
-    def __init__(self, unique_id, pos, model, energy:float):
+    def __init__(self, unique_id, pos, model, energy: float):
         super().__init__(unique_id, model, energy=energy)
         self.pos = pos
 

@@ -1,10 +1,11 @@
 from mesa.visualization.ModularVisualization import ModularServer
-from mesa.visualization.modules import CanvasGrid, ChartModule
 from mesa.visualization.UserParam import UserSettableParameter
+from mesa.visualization.modules import CanvasGrid
 
 from EMAS.HawkAgent import HawkAgent
-from EMAS.EmasModel import EmasModel
+from EMAS.HawkModel import HawkModel
 from EMAS.IslandBorderAgent import IslandBorderAgent
+
 
 def EMAS_model_portrayal(agent):
     if agent is None:
@@ -18,7 +19,7 @@ def EMAS_model_portrayal(agent):
         portrayal["scale"] = 0.9
         portrayal["Layer"] = 1
 
-    elif type(agent) is IslandBorderAgent:
+    if type(agent) is IslandBorderAgent:
         portrayal["Color"] = ["#802000"]
         portrayal["Shape"] = "rect"
         portrayal["Filled"] = "true"
@@ -54,6 +55,6 @@ model_params = {
 }
 
 server = ModularServer(
-    EmasModel, [canvas_element], "EMAS Model", model_params
+    HawkModel, [canvas_element], "EMAS Model", model_params
 )
 server.port = 8521

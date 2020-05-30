@@ -1,12 +1,12 @@
-from typing import List, Tuple, Union, Optional, Set
-from mesa import Model, Agent
+from typing import List, Tuple, Set
+
+from mesa import Model
 from mesa.space import MultiGrid, Coordinate
+
 from EMAS.IslandBorderAgent import IslandBorderAgent
-from EMAS.EmasAgent import EmasAgent
 
 
 class EmasModel(Model):
-
     # death_level: float = 0
     # migration_level: float = 0
     # energy_redistribution_radius: int = 4
@@ -32,6 +32,7 @@ class EmasModel(Model):
             islands=[]
     ):
         super().__init__()
+        print("Executing emas model contructor")
         self.height: int = height
         self.width: int = width
         self.columns: int = columns
@@ -85,7 +86,7 @@ class EmasModel(Model):
 
     # Assuming (0, 0) is at the top left corner
     def __get_island(self, pos: Coordinate):
-        print("Getting island for "+str(pos))
+        print("Getting island for " + str(pos))
         return list(filter(lambda coors: coors[0][0] < pos[0] < coors[1][0] and coors[0][1] < pos[1] < coors[1][1],
                            EmasModel.islands)).pop()
 
