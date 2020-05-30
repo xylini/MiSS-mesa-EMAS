@@ -15,7 +15,7 @@ class EmasAgent(Agent):
         self.death_level = death_level
         self.migration_level = migration_level
 
-    def died(self) -> bool:
+    def die(self) -> bool:
         if self.energy < self.death_level:
             self.model.grid._remove_agent(self.pos, self)
             self.model.schedule.remove(self)
@@ -24,12 +24,12 @@ class EmasAgent(Agent):
             return False
         return True
 
-    # def migrated(self) -> bool:
-    # if self.energy > self.migration_level:
-    #     self.model.grid._remove_agent(self.pos, self)
-    #     self.model.grid._place_agent(self.migration_destination(), self)
-    #     return True
-    # return False
+    def migrate(self) -> bool:
+        if self.energy > self.migration_level:
+            print("migrating hawk")
+            self.model.grid.move_agent(self, self.migration_destination())
+            return True
+        return False
 
     def reproduce(self):
         raise Exception("Reproduce strategy not implemented!")

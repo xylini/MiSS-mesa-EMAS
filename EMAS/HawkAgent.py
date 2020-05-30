@@ -10,6 +10,7 @@ class HawkAgent(RandomWalker):
 
     def step(self):
         print("Performing hawk step")
+        self.migrate()
         self.random_move()
         self.energy -= random.random()
-        self.died()
+        self.die()
