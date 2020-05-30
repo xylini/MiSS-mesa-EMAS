@@ -2,6 +2,7 @@ from mesa.visualization.ModularVisualization import ModularServer
 from mesa.visualization.UserParam import UserSettableParameter
 from mesa.visualization.modules import CanvasGrid
 
+from EMAS.DoveAgent import DoveAgent
 from EMAS.HawkAgent import HawkAgent
 from EMAS.HawkModel import HawkModel
 from EMAS.IslandBorderAgent import IslandBorderAgent
@@ -14,13 +15,18 @@ def EMAS_model_portrayal(agent):
     portrayal = {}
 
     if type(agent) is HawkAgent:
-        portrayal["Shape"] = "resources/dove.png"
-        # https://icons8.com/web-app/433/sheep
+        portrayal["Shape"] = "resources/hawk.png"
         portrayal["scale"] = 0.9
         portrayal["Layer"] = 1
         portrayal["text"] = agent.energy
 
-    if type(agent) is IslandBorderAgent:
+    elif type(agent) is DoveAgent:
+        portrayal["Shape"] = "resources/dove.png"
+        portrayal["scale"] = 0.9
+        portrayal["Layer"] = 1
+        portrayal["text"] = agent.energy
+
+    elif type(agent) is IslandBorderAgent:
         portrayal["Color"] = ["#802000"]
         portrayal["Shape"] = "rect"
         portrayal["Filled"] = "true"
@@ -55,7 +61,22 @@ model_params = {
     ),
     "hawk_per_island": UserSettableParameter(
         "slider", "Hawks per island", 1, 1, 10
-    )
+    ),
+    "dove_per_island": UserSettableParameter(
+        "slider", "Doves per island", 1, 1, 10
+    ),
+    "hawk_met_dove": UserSettableParameter(
+        "slider", "Points when Hawk met Dove", 0, -10, 10, 0.1
+    ),
+    "hawk_met_hawk": UserSettableParameter(
+        "slider", "Points when Hawk met Hawk", 0, -10, 10, 0.1
+    ),
+    "dove_met_dove": UserSettableParameter(
+        "slider", "Points when Dove met Dove", 0, -10, 10, 0.1
+    ),
+    "dove_met_hawk": UserSettableParameter(
+        "slider", "Points when Dove met Hawk", 0, -10, 10, 0.1
+    ),
 }
 
 server = ModularServer(
