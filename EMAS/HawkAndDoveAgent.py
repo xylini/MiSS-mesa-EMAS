@@ -1,5 +1,3 @@
-import random
-
 from EMAS.RandomWalker import RandomWalker
 
 
@@ -61,4 +59,8 @@ class HawkAndDoveAgent(RandomWalker):
         self.genotype = self.evolve()
 
     def evolve(self):
-        pass
+        most_commonly_occurring = sorted({(self.last_5_meetings.count(value), value) for value in self.last_5_meetings})[-1]
+        if most_commonly_occurring[1] != self.genotype and most_commonly_occurring[0] > (self.last_5_meetings + [self.genotype]).count(self.genotype):
+            return most_commonly_occurring[1]
+
+        return self.genotype
