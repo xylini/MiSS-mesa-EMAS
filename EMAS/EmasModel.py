@@ -1,11 +1,10 @@
 from typing import List, Tuple, Set
-
 from mesa import Model
 from mesa.space import MultiGrid, Coordinate
-
 from EMAS.EmasAgent import EmasAgent
 from EMAS.IslandBorderAgent import IslandBorderAgent
 from EMAS.constants import HEIGHT, WIDTH
+
 
 class EmasModel(Model):
     description = (
@@ -26,7 +25,6 @@ class EmasModel(Model):
             islands=[]
     ):
         super().__init__()
-        print("Executing emas model contructor")
         self.height: int = height
         self.width: int = width
         self.columns: int = columns
@@ -39,7 +37,6 @@ class EmasModel(Model):
         self.islands: List[Tuple[Tuple[int, int], Tuple[int, int]]] = islands
         self.grid = MultiGrid(self.height, self.width, torus=True)
 
-        # TODO: remember to set max volumns and rows
         borders_x_indexes = sorted([int(self.width * part / columns) for part in range(1, self.columns)])
         columns_points: Set[Tuple[int, int]] = {(x, y) for x in borders_x_indexes for y in range(self.height)}
 
@@ -53,13 +50,12 @@ class EmasModel(Model):
         islands_x_corners = [-1] + borders_x_indexes + [self.width]
         islands_y_corners = [-1] + borders_y_indexes + [self.height]
 
-        # left upper and right lower corner
+        # left lower and right upper corner
         self.islands = [
             ((x, y), (islands_x_corners[x_u + 1], islands_y_corners[y_u + 1]))
             for x_u, x in enumerate(islands_x_corners) if x != self.width
             for y_u, y in enumerate(islands_y_corners) if y != self.height
         ]
-        print(self.islands)
 
     def get_neighborhood(self, pos: Coordinate, include_center=False, radius=1):
         next_moves = self.grid.get_neighborhood(pos, self.moore, include_center, radius)
@@ -67,14 +63,10 @@ class EmasModel(Model):
         return self._filter_coors_in_island(island, next_moves)
 
     def redistribute_energy(self, pos: Coordinate, energy: float, include_center=False, radius=1):
-        print("REDISTRIBUTING FOR RADIUS : " + str(radius))
         neighbours = self.grid.get_neighbors(pos, self.moore, include_center, radius)
         island = self.get_island(pos)
-        print("DISCOVERED NEIGHBOURS: " + str(neighbours))
         close_neighbours = list(filter(lambda n: self._is_in_island(island, n.pos), neighbours))
-        print("DISCOVERED ISLAND NEIGHBOURS: " + str(close_neighbours))
         emas_neighbours = list(filter(lambda a: isinstance(a, EmasAgent), close_neighbours))
-        print("DISCOVERED EMAS ISLAND NEIGHBOURS: " + str(emas_neighbours))
 
         energy_delta = energy / len(emas_neighbours)
         for neighbour in emas_neighbours:
@@ -86,7 +78,7 @@ class EmasModel(Model):
                            self.islands)).pop()
 
     def _filter_coors_in_island(self, island: Tuple[Tuple[int, int], Tuple[int, int]],
-                                 positions: List[Tuple[int, int]]):
+                                positions: List[Tuple[int, int]]):
         return list(filter(lambda move: island[0][0] < move[0] < island[1][0] and island[0][1] < move[1] <
                                         island[1][1], positions))
 

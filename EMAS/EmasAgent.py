@@ -9,7 +9,7 @@ class EmasAgent(Agent):
     other agents.
     """
 
-    def __init__(self, unique_id, model, migration_level=10, death_level=0, energy=None, genotype=None):
+    def __init__(self, unique_id, model, migration_level, death_level, energy, genotype):
         super().__init__(unique_id, model)
         self.energy = energy
         self.death_level = death_level
@@ -27,7 +27,6 @@ class EmasAgent(Agent):
 
     def migrate(self) -> bool:
         if self.energy > self.migration_level:
-            print("migrating hawk")
             self.model.grid.move_agent(self, self.migration_destination())
             return True
         return False

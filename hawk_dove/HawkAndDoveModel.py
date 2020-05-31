@@ -1,9 +1,8 @@
 import random
-
 from mesa.datacollection import DataCollector
+from mesa.time import RandomActivation
 from EMAS.EmasModel import EmasModel
 from hawk_dove.HawkAndDoveAgent import HawkAndDoveAgent
-from EMAS.RandomActivationByGenotype import RandomActivationByGenotype
 
 
 class HawkAndDoveModel(EmasModel):
@@ -33,16 +32,16 @@ class HawkAndDoveModel(EmasModel):
             energy_redistribution_radius=energy_redistribution_radius
         )
 
-        self.schedule = RandomActivationByGenotype(self)
-
+        self.schedule = RandomActivation(self)
         self.datacollector = DataCollector(
             {
-                "Doves": lambda m: m.schedule.get_genotype_count(HawkAndDoveAgent.DOVE),
-                "Hawks": lambda m: m.schedule.get_genotype_count(HawkAndDoveAgent.HAWK),
+                "Doves": lambda model: [agent.genotype for agent in model.schedule.agents].count(
+                    HawkAndDoveAgent.DOVE),
+                "Hawks": lambda model: [agent.genotype for agent in model.schedule.agents].count(
+                    HawkAndDoveAgent.HAWK),
             }
         )
 
-        print("Initializing hawk and dove")
         for island in self.islands:
             for _ in range(hawk_per_island):
                 try:
@@ -51,11 +50,13 @@ class HawkAndDoveModel(EmasModel):
                 except ValueError:
                     x = island[0][0] + 1
                     y = island[0][1] + 1
-                print("Creating hawk at: x=" + str(x) + " y=" + str(y))
                 energy = self.init_energy
                 hawk = HawkAndDoveAgent(
                     self.next_id(),
-                    (x, y), self,
+                    (x, y),
+                    self,
+                    migration_level,
+                    death_level,
                     energy,
                     hawk_met_hawk,
                     hawk_met_dove,
@@ -73,11 +74,13 @@ class HawkAndDoveModel(EmasModel):
                 except ValueError:
                     x = island[0][0] + 1
                     y = island[0][1] + 1
-                print("Creating dove at: x=" + str(x) + " y=" + str(y))
                 energy = self.init_energy
                 dove = HawkAndDoveAgent(
                     self.next_id(),
-                    (x, y), self,
+                    (x, y),
+                    self,
+                    migration_level,
+                    death_level,
                     energy,
                     hawk_met_hawk,
                     hawk_met_dove,
@@ -93,7 +96,7 @@ class HawkAndDoveModel(EmasModel):
         self.datacollector.collect(self)
 
     def step(self):
-        self.schedule.step_and_count()
+        self.schedule.step()
         self.datacollector.collect(self)
 
     def generate_migration_destination(self, old_pos):
@@ -105,4 +108,4 @@ class HawkAndDoveModel(EmasModel):
             new_island = old_island
         x = self.random.randrange(new_island[0][0] + 1, new_island[1][0] - 1)
         y = self.random.randrange(new_island[0][1] + 1, new_island[1][1] - 1)
-        return (x, y)
+        return x, y
