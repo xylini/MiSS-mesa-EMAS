@@ -52,7 +52,7 @@ class HawkAndDoveAgent(RandomWalker):
             self.energy += self.hawk_met_hawk
         elif self.genotype is HawkAndDoveAgent.DOVE:
             self.energy += self.dove_met_hawk
-        # self.genotype = self.evolve()
+        self.genotype = self.evolve()
 
     def met_dove(self):
         self.last_5_meetings = self.last_5_meetings[1:5] + [HawkAndDoveAgent.DOVE]
@@ -68,5 +68,5 @@ class HawkAndDoveAgent(RandomWalker):
             return most_commonly_occurring[1]
 
         if most_commonly_occurring[0] == len(self.last_5_meetings) and most_commonly_occurring[1] == self.genotype and random() < 0.1:
-            return ({HawkAndDoveAgent.HAWK, HawkAndDoveAgent.DOVE} - self.genotype).pop()
+            return ({HawkAndDoveAgent.HAWK, HawkAndDoveAgent.DOVE} - {self.genotype}).pop()
         return self.genotype
