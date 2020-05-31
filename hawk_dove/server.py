@@ -2,10 +2,10 @@ from mesa.visualization.ModularVisualization import ModularServer
 from mesa.visualization.UserParam import UserSettableParameter
 from mesa.visualization.modules import CanvasGrid, ChartModule
 
-from hawk_dove.HawkAndDoveAgent import HawkAndDoveAgent
-from hawk_dove.HawkModel import HawkModel
 from EMAS.IslandBorderAgent import IslandBorderAgent
 from EMAS.constants import HEIGHT, WIDTH, HEIGHT_RESOLUTION, WIDTH_RESOLUTION
+from hawk_dove.HawkAndDoveAgent import HawkAndDoveAgent
+from hawk_dove.HawkAndDoveModel import HawkAndDoveModel
 
 
 def EMAS_model_portrayal(agent):
@@ -23,13 +23,13 @@ def EMAS_model_portrayal(agent):
         portrayal["h"] = 1
 
     elif agent.genotype is HawkAndDoveAgent.HAWK:
-        portrayal["Shape"] = "resources/hawk.png"
+        portrayal["Shape"] = "hawk_dove/resources/hawk.png"
         portrayal["scale"] = 0.9
         portrayal["Layer"] = 1
         portrayal["text"] = 'e: %.1f  id: %s' % (agent.energy, agent.unique_id)
 
     elif agent.genotype is HawkAndDoveAgent.DOVE:
-        portrayal["Shape"] = "resources/dove.png"
+        portrayal["Shape"] = "hawk_dove/resources/dove.png"
         portrayal["scale"] = 0.9
         portrayal["Layer"] = 1
         portrayal["text"] = 'e: %.1f  id: %s' % (agent.energy, agent.unique_id)
@@ -84,6 +84,6 @@ model_params = {
 }
 
 server = ModularServer(
-    HawkModel, [canvas_element, chart_element], "EMAS Model", model_params
+    HawkAndDoveModel, [canvas_element, chart_element], "EMAS Model", model_params
 )
 server.port = 8521

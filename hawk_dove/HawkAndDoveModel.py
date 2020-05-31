@@ -3,10 +3,10 @@ import random
 from mesa.datacollection import DataCollector
 from EMAS.EmasModel import EmasModel
 from hawk_dove.HawkAndDoveAgent import HawkAndDoveAgent
-from EMAS.schedule import RandomActivationByGenotype
+from EMAS.RandomActivationByGenotype import RandomActivationByGenotype
 
 
-class HawkModel(EmasModel):
+class HawkAndDoveModel(EmasModel):
     def __init__(
             self,
             columns,
@@ -37,8 +37,8 @@ class HawkModel(EmasModel):
 
         self.datacollector = DataCollector(
             {
-                "Doves": lambda m: m.schedule.get_breed_count(HawkAndDoveAgent.DOVE),
-                "Hawks": lambda m: m.schedule.get_breed_count(HawkAndDoveAgent.HAWK),
+                "Doves": lambda m: m.schedule.get_genotype_count(HawkAndDoveAgent.DOVE),
+                "Hawks": lambda m: m.schedule.get_genotype_count(HawkAndDoveAgent.HAWK),
             }
         )
 
