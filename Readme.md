@@ -10,7 +10,7 @@ Emas module enables a multi island agent simulation with basic emas operations: 
   
 ## Installation  
   
-To install the dependencies use pip and the requirements.txt. Use run_emas.py to start EMAS server.  
+To install the dependencies use pip and the requirements.txt. Use run_emas.py to start EMAS template server.  
   
 ## Hawk and dove example
 
@@ -20,7 +20,7 @@ Hawks and doves interaction outcomes are listed below:
 
 |  | HAWK | DOVE |
 |--|--|--|
-| HAWK | 0 \ 0 | 1 \ 1 |
-| DOVE |-1 \ 1  | -3 \ -3 |
+| HAWK | -3 \ -3 | 1 \ 1 |
+| DOVE |-1 \ 1  | 0.5 \ 0.5 |
 
-Use run_hawk_dove.py to run example.
+Use run_hawk_dove.py to run hawk and dove server.
