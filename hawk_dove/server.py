@@ -48,7 +48,7 @@ model_params = {
     "self_mutation": UserSettableParameter("checkbox", "Self mutation", True),
     "hawk_met_dove": UserSettableParameter("number", "Points for Hawk when met Dove", value=1),
     "hawk_met_hawk": UserSettableParameter("number", "Points for Hawk when met Hawk", value=-3),
-    "dove_met_dove": UserSettableParameter("number", "Points for Dove when met Dove", value=0),
+    "dove_met_dove": UserSettableParameter("number", "Points for Dove when met Dove", value=0.5),
     "dove_met_hawk": UserSettableParameter("number", "Points for Dove when met Hawk", value=-1),
     "columns": UserSettableParameter(
         "slider", "Columns", 3, 1, 10
