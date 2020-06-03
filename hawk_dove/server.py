@@ -26,13 +26,13 @@ def EMAS_model_portrayal(agent):
         portrayal["Shape"] = "hawk_dove/resources/hawk.png"
         portrayal["scale"] = 0.9
         portrayal["Layer"] = 1
-        portrayal["text"] = 'e: %.1f  id: %s' % (agent.energy, agent.unique_id)
+        portrayal["text"] = 'e: %.1f' % agent.energy
 
     elif agent.genotype is HawkAndDoveAgent.DOVE:
         portrayal["Shape"] = "hawk_dove/resources/dove.png"
         portrayal["scale"] = 0.9
         portrayal["Layer"] = 1
-        portrayal["text"] = 'e: %.1f  id: %s' % (agent.energy, agent.unique_id)
+        portrayal["text"] = 'e: %.1f' % agent.energy
 
     return portrayal
 
@@ -46,6 +46,10 @@ chart_element = ChartModule(
 model_params = {
     "moore": UserSettableParameter("checkbox", "Move in all directions", True),
     "self_mutation": UserSettableParameter("checkbox", "Self mutation", True),
+    "hawk_met_dove": UserSettableParameter("number", "Points for Hawk when met Dove", value=1),
+    "hawk_met_hawk": UserSettableParameter("number", "Points for Hawk when met Hawk", value=-3),
+    "dove_met_dove": UserSettableParameter("number", "Points for Dove when met Dove", value=0),
+    "dove_met_hawk": UserSettableParameter("number", "Points for Dove when met Hawk", value=-1),
     "columns": UserSettableParameter(
         "slider", "Columns", 3, 1, 10
     ),
@@ -57,6 +61,15 @@ model_params = {
     ),
     "death_level": UserSettableParameter(
         "slider", "Energy level to die", 0, 0, 10, 0.01
+    ),
+    "reproduction_level": UserSettableParameter(
+        "slider", "Energy level to reproduce", 7, 0, 10, 0.01
+    ),
+    "parent_part_to_child": UserSettableParameter(
+        "slider", "% of parent energy for child", 30, 0, 100, 0.1
+    ),
+    "base_child_energy": UserSettableParameter(
+        "slider", "Child base energy level", 5, 0, 10, 0.01
     ),
     "energy_redistribution_radius": UserSettableParameter(
         "slider", "Energy redistribution radius", 4, 1, 20
@@ -72,19 +85,7 @@ model_params = {
     ),
     "dove_per_island": UserSettableParameter(
         "slider", "Doves per island", 2, 0, 10
-    ),
-    "hawk_met_dove": UserSettableParameter(
-        "slider", "Points when Hawk met Dove", 1, -10, 10, 0.1
-    ),
-    "hawk_met_hawk": UserSettableParameter(
-        "slider", "Points when Hawk met Hawk", -3, -3, 10, 0.1
-    ),
-    "dove_met_dove": UserSettableParameter(
-        "slider", "Points when Dove met Dove", 0, -10, 10, 0.1
-    ),
-    "dove_met_hawk": UserSettableParameter(
-        "slider", "Points when Dove met Hawk", -1, -10, 10, 0.1
-    ),
+    )
 }
 
 server = ModularServer(

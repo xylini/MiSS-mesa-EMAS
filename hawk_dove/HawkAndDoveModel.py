@@ -12,6 +12,9 @@ class HawkAndDoveModel(EmasModel):
             rows,
             death_level,
             migration_level,
+            reproduction_level,
+            parent_part_to_child,
+            base_child_energy,
             init_energy,
             moore,
             self_mutation,
@@ -31,6 +34,9 @@ class HawkAndDoveModel(EmasModel):
             migration_level=migration_level,
             init_energy=init_energy,
             moore=moore,
+            reproduction_level=reproduction_level,
+            parent_part_to_child=parent_part_to_child,
+            base_child_energy=base_child_energy,
             energy_redistribution_radius=energy_redistribution_radius
         )
 

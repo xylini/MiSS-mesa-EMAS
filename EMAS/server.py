@@ -44,6 +44,15 @@ model_params = {
     "death_level": UserSettableParameter(
         "slider", "Energy level to die", 0, 0, 10, 0.01
     ),
+    "reproduction_level": UserSettableParameter(
+        "slider", "Energy level to reproduce", 7, 0, 10, 0.01
+    ),
+    "parent_part_to_child": UserSettableParameter(
+        "slider", "% of parent energy for child", 30, 0, 100, 0.1
+    ),
+    "base_child_energy": UserSettableParameter(
+        "slider", "Child base energy level", 5, 0, 10, 0.01
+    ),
     "energy_redistribution_radius": UserSettableParameter(
         "slider", "Energy redistribution radius", 4, 1, 20
     ),

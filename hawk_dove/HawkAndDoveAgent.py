@@ -1,4 +1,4 @@
-from random import random
+from random import random, choice
 from EMAS.RandomWalker import RandomWalker
 from collections import Counter
 
@@ -48,6 +48,7 @@ class HawkAndDoveAgent(RandomWalker):
                 elif self.genotype is HawkAndDoveAgent.DOVE:
                     agent.met_dove()
 
+        self.reproduce()
         self.migrate()
         self.die()
 
@@ -95,3 +96,46 @@ class HawkAndDoveAgent(RandomWalker):
             return ({HawkAndDoveAgent.HAWK, HawkAndDoveAgent.DOVE} - {self.genotype}).pop()
 
         return self.genotype
+
+    def reproduce(self):
+        if self.energy > self.model.reproduction_level:
+            closest_neighbour = self.model.get_closest_neighbour_on_island(self.pos)
+            if closest_neighbour is not None:
+                current_island = self.model.get_island(self.pos)
+                try:
+                    x = self.random.randrange(current_island[0][0] + 1, current_island[1][0] - 1)
+                    y = self.random.randrange(current_island[0][1] + 1, current_island[1][1] - 1)
+                except ValueError:
+                    x = current_island[0][0] + 1
+                    y = current_island[0][1] + 1
+
+                child_pos = (x, y)
+                child_start_energy = self.model.base_child_energy + \
+                                     (self.model.parent_part_to_child/100) * (self.energy + closest_neighbour.energy)
+
+                self.energy -= self.energy * self.model.parent_part_to_child
+                closest_neighbour.energy -= closest_neighbour.energy * self.model.parent_part_to_child
+
+                child_agent = HawkAndDoveAgent(
+                    self.model.next_id(),
+                    child_pos,
+                    self.model,
+                    self.migration_level,
+                    self.death_level,
+                    child_start_energy,
+                    self.self_mutation,
+                    self.meeting_history_len,
+                    self.hawk_met_hawk,
+                    self.hawk_met_dove,
+                    self.dove_met_hawk,
+                    self.dove_met_dove,
+                    self.generate_new_genotype(closest_neighbour)
+                )
+
+                self.model.grid.place_agent(child_agent, child_pos)
+                self.model.schedule.add(child_agent)
+
+    def generate_new_genotype(self, other_parent):
+        if self.genotype is other_parent.genotype:
+            return self.genotype
+        return choice([HawkAndDoveAgent.DOVE, HawkAndDoveAgent.HAWK])
