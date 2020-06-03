@@ -1,5 +1,6 @@
 from random import random
 from EMAS.RandomWalker import RandomWalker
+from collections import Counter
 
 
 class HawkAndDoveAgent(RandomWalker):
@@ -14,6 +15,8 @@ class HawkAndDoveAgent(RandomWalker):
             migration_level,
             death_level,
             energy: float,
+            self_mutation,
+            meeting_history_len,
             hawk_met_hawk,
             hawk_met_dove,
             dove_met_hawk,
@@ -26,7 +29,9 @@ class HawkAndDoveAgent(RandomWalker):
         self.dove_met_hawk = dove_met_hawk
         self.dove_met_dove = dove_met_dove
         self.genotype = genotype
-        self.last_5_meetings = []
+        self.self_mutation = self_mutation
+        self.meetings_history = []
+        self.meeting_history_len = meeting_history_len
 
     def step(self):
         self.random_move()
@@ -46,30 +51,47 @@ class HawkAndDoveAgent(RandomWalker):
         self.migrate()
         self.die()
 
+    def update_meetings(self, who_visited_me):
+        if self.meeting_history_len > 0:
+            if len(self.meetings_history) == self.meeting_history_len:
+                self.meetings_history = self.meetings_history[1:self.meeting_history_len] + [who_visited_me]
+            else:
+                self.meetings_history = self.meetings_history + [who_visited_me]
+
     def met_hawk(self):
-        self.last_5_meetings = self.last_5_meetings[1:5] + [HawkAndDoveAgent.HAWK]
+        self.update_meetings(HawkAndDoveAgent.HAWK)
+
         if self.genotype is HawkAndDoveAgent.HAWK:
             self.energy += self.hawk_met_hawk
         elif self.genotype is HawkAndDoveAgent.DOVE:
             self.energy += self.dove_met_hawk
-        self.genotype = self.evolve()
+
+        if self.self_mutation:
+            self.genotype = self.evolve()
 
     def met_dove(self):
-        self.last_5_meetings = self.last_5_meetings[1:5] + [HawkAndDoveAgent.DOVE]
+        self.update_meetings(HawkAndDoveAgent.DOVE)
+
         if self.genotype is HawkAndDoveAgent.HAWK:
             self.energy += self.hawk_met_dove
         elif self.genotype is HawkAndDoveAgent.DOVE:
             self.energy += self.dove_met_dove
-        self.genotype = self.evolve()
 
-    def evolve(self):
-        most_commonly_occurring = \
-        sorted({(self.last_5_meetings.count(value), value) for value in self.last_5_meetings})[-1]
-        if most_commonly_occurring[1] != self.genotype and most_commonly_occurring[0] > (
-                self.last_5_meetings + [self.genotype]).count(self.genotype):
-            return most_commonly_occurring[1]
+        if self.self_mutation:
+            self.genotype = self.evolve()
 
-        if most_commonly_occurring[0] == len(self.last_5_meetings) and most_commonly_occurring[
-            1] == self.genotype and random() < 0.1:
+    def evolve(self, chance_for_random_mutation=0.1):
+        most_common_met_genotype, met_counts = Counter(self.meetings_history).most_common(1)[0]
+
+        # Mutation if most of met genotypes are opposite to myself
+        if most_common_met_genotype is not self.genotype \
+                and met_counts > self.meetings_history.count(self.genotype):
+            return most_common_met_genotype
+
+        # Random genotype mutation if whole meeting history is the same as self genotype
+        if met_counts == len(self.meetings_history) \
+                and most_common_met_genotype is self.genotype \
+                and random() < chance_for_random_mutation:
             return ({HawkAndDoveAgent.HAWK, HawkAndDoveAgent.DOVE} - {self.genotype}).pop()
+
         return self.genotype

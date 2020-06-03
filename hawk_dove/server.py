@@ -45,6 +45,7 @@ chart_element = ChartModule(
 
 model_params = {
     "moore": UserSettableParameter("checkbox", "Move in all directions", True),
+    "self_mutation": UserSettableParameter("checkbox", "Self mutation", True),
     "columns": UserSettableParameter(
         "slider", "Columns", 3, 1, 10
     ),
@@ -62,6 +63,9 @@ model_params = {
     ),
     "init_energy": UserSettableParameter(
         "slider", "Energy agent starts with", 5, 1, 10, 0.1
+    ),
+    "meeting_history_len": UserSettableParameter(
+        "slider", "How many meetings should be remembered", 5, 0, 20
     ),
     "hawk_per_island": UserSettableParameter(
         "slider", "Hawks per island", 2, 0, 10
