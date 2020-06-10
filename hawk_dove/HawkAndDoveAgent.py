@@ -101,6 +101,7 @@ class HawkAndDoveAgent(RandomWalker):
         if self.energy > self.model.reproduction_level:
             closest_neighbour = self.model.get_closest_neighbour_on_island(self.pos)
             if closest_neighbour is not None:
+                parent_energy = closest_neighbour.energy
                 current_island = self.model.get_island(self.pos)
                 try:
                     x = self.random.randrange(current_island[0][0] + 1, current_island[1][0] - 1)
@@ -111,11 +112,11 @@ class HawkAndDoveAgent(RandomWalker):
 
                 child_pos = (x, y)
                 child_start_energy = self.model.base_child_energy + \
-                                     (self.model.parent_part_to_child/100) * (self.energy + closest_neighbour.energy)
+                                     (self.model.parent_part_to_child/100) * (self.energy + parent_energy)
 
                 self.energy -= self.energy * self.model.parent_part_to_child
-                closest_neighbour.energy -= closest_neighbour.energy * self.model.parent_part_to_child
-
+                energy_delta = parent_energy * self.model.parent_part_to_child / 100
+                closest_neighbour.energy = parent_energy - energy_delta
                 child_agent = HawkAndDoveAgent(
                     self.model.next_id(),
                     child_pos,
@@ -131,7 +132,6 @@ class HawkAndDoveAgent(RandomWalker):
                     self.dove_met_dove,
                     self.generate_new_genotype(closest_neighbour)
                 )
-
                 self.model.grid.place_agent(child_agent, child_pos)
                 self.model.schedule.add(child_agent)
 
@@ -139,3 +139,6 @@ class HawkAndDoveAgent(RandomWalker):
         if self.genotype is other_parent.genotype:
             return self.genotype
         return choice([HawkAndDoveAgent.DOVE, HawkAndDoveAgent.HAWK])
+
+    def migration_destination(self):
+        return self.model.generate_migration_destination(self.pos)

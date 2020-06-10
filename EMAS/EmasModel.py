@@ -88,7 +88,6 @@ class EmasModel(Model):
                                         island[1][1], positions))
 
     def _is_in_island(self, island, pos):
-        print(str(island) + "  " + str(pos))
         return island[0][0] < pos[0] < island[1][0] and island[0][1] < pos[1] < island[1][1]
 
     def _filter_for_emas_agents(self, agents):
