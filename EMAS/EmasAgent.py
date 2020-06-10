@@ -16,12 +16,18 @@ class EmasAgent(Agent):
         self.migration_level = migration_level
         self.genotype = genotype
 
+    def step(self):
+        self.reproduce()
+        self.migrate()
+        self.die()
+
     def die(self) -> bool:
         if self.energy <= self.death_level:
+            position = self.pos
             self.model.grid.remove_agent(self)
             self.model.schedule.remove(self)
             if self.energy > 0:
-                self.model.redistribute_energy(self.pos, self.energy, radius=self.model.energy_redistribution_radius)
+                self.model.redistribute_energy(position, self.energy, radius=self.model.energy_redistribution_radius)
             return False
         return True
 
@@ -38,4 +44,4 @@ class EmasAgent(Agent):
         raise Exception("Reproduce genotype strategy not implemented!")
 
     def migration_destination(self) -> Coordinate:
-        return self.model.generate_migration_destination(self.pos)
+        raise Exception("Migration strategy not implemented!")

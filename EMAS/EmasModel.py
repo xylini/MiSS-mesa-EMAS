@@ -68,20 +68,15 @@ class EmasModel(Model):
         island = self.get_island(pos)
         return self._filter_coors_in_island(island, next_moves)
 
-    def redistribute_energy(self, pos: Coordinate, energy: float, include_center=False, radius=1):
-        # TODO: not sure if this works, got some errors when energy level to die increased
-        # TODO: maybe use iter_neighbors rather than get_neighbors?
+    def redistribute_energy(self, pos: Coordinate, energy: float, include_center=False, radius=10):
         neighbours = self.grid.get_neighbors(pos, self.moore, include_center, radius)
         island = self.get_island(pos)
         close_neighbours = list(filter(lambda n: self._is_in_island(island, n.pos), neighbours))
         emas_neighbours = list(filter(lambda a: isinstance(a, EmasAgent), close_neighbours))
-        energy_delta = 0
-
         if emas_neighbours:
             energy_delta = energy / len(emas_neighbours)
-        for neighbour in emas_neighbours:
-            neighbour.energy += energy_delta
-            print("Giving " + str(energy_delta) + " to " + str(neighbour.pos))
+            for neighbour in emas_neighbours:
+                neighbour.energy += energy_delta
 
     def get_island(self, pos: Coordinate):
         return list(filter(lambda coors: coors[0][0] < pos[0] < coors[1][0] and coors[0][1] < pos[1] < coors[1][1],
@@ -93,6 +88,7 @@ class EmasModel(Model):
                                         island[1][1], positions))
 
     def _is_in_island(self, island, pos):
+        print(str(island) + "  " + str(pos))
         return island[0][0] < pos[0] < island[1][0] and island[0][1] < pos[1] < island[1][1]
 
     def _filter_for_emas_agents(self, agents):
