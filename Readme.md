@@ -33,3 +33,6 @@ Hawks and doves interaction outcomes are listed below:
 |--|--|--|
 | HAWK | -3 \ -3 | 1 \ 1 |
 | DOVE |-1 \ 1  | 0.5 \ 0.5 |
+
+## Preview
+![image](./resources/hawkanddovescreenshot.png)
